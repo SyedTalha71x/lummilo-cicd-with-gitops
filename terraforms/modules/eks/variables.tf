@@ -1,16 +1,5 @@
-# EKS module specific variables
-variable "project_name" {
-  description = "Project name"
-  type        = string
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-}
-
 variable "cluster_name" {
-  description = "EKS cluster name"
+  description = "Name of the EKS cluster"
   type        = string
 }
 
@@ -34,39 +23,38 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
-variable "endpoint_private_access" {
-  description = "Enable private access to EKS API"
+variable "instance_types" {
+  description = "List of EC2 instance types for EKS nodes"
+  type        = list(string)
+  default     = ["t3.medium"]
+}
+
+variable "desired_size" {
+  description = "Desired number of worker nodes"
+  type        = number
+  default     = 2
+}
+
+variable "max_size" {
+  description = "Maximum number of worker nodes"
+  type        = number
+  default     = 3
+}
+
+variable "min_size" {
+  description = "Minimum number of worker nodes"
+  type        = number
+  default     = 1
+}
+
+variable "enable_public_access" {
+  description = "Enable public access to EKS cluster API server"
   type        = bool
   default     = true
 }
 
-variable "endpoint_public_access" {
-  description = "Enable public access to EKS API"
-  type        = bool
-  default     = false
-}
-
-variable "public_access_cidrs" {
-  description = "CIDR blocks that can access EKS public endpoint"
-  type        = list(string)
-  default     = []
-}
-
-variable "enabled_cluster_log_types" {
-  description = "EKS control plane logging types"
-  type        = list(string)
-  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-}
-
-variable "managed_node_groups" {
-  description = "Managed node groups configuration"
-  type = map(object({
-    capacity_type  = string
-    instance_types = list(string)
-    desired_size   = number
-    max_size       = number
-    min_size       = number
-    disk_size      = number
-    ec2_ssh_key    = string
-  }))
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
 }

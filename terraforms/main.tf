@@ -1,41 +1,29 @@
-# Get current AWS region
-data "aws_region" "current" {}
-
-# Get current AWS caller identity
-data "aws_caller_identity" "current" {}
-
 # VPC Module
 module "vpc" {
   source = "./modules/vpc"
-
-  # Pass variables from root to VPC module
-  project_name          = var.project_name
-  environment           = var.environment
-  vpc_cidr             = var.vpc_cidr
-  availability_zones   = var.availability_zones
+  
+  vpc_name            = var.vpc_name
+  vpc_cidr            = var.vpc_cidr
+  availability_zones  = var.availability_zones
   private_subnet_cidrs = var.private_subnet_cidrs
   public_subnet_cidrs  = var.public_subnet_cidrs
 }
 
-# EKS Cluster Module
+# EKS Module
 module "eks" {
   source = "./modules/eks"
-
-  # So i will pass my variables from root to EKS module for reusibility
-  project_name          = var.project_name
-  environment           = var.environment
-  cluster_name          = "${var.project_name}-${var.environment}"
-  cluster_version       = var.cluster_version
   
-  vpc_id                = module.vpc.vpc_id
-  private_subnet_ids    = module.vpc.private_subnet_ids
-  public_subnet_ids     = module.vpc.public_subnet_ids
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
   
-  endpoint_private_access = var.endpoint_private_access
-  endpoint_public_access  = var.endpoint_public_access
-  public_access_cidrs     = var.public_access_cidrs
+  vpc_id          = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+  public_subnet_ids  = module.vpc.public_subnet_ids
   
-  enabled_cluster_log_types = var.enabled_cluster_log_types
+  instance_types  = var.instance_types
+  desired_size    = var.desired_size
+  max_size        = var.max_size
+  min_size        = var.min_size
   
-  managed_node_groups = var.managed_node_groups
+  enable_public_access = var.enable_public_access
 }

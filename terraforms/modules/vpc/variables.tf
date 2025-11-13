@@ -1,30 +1,24 @@
-# VPC module specific variables
-variable "project_name" {
-  description = "Project name"
-  type        = string
-}
-
-variable "environment" {
-  description = "Environment name"
+variable "vpc_name" {
+  description = "Name of the VPC"
   type        = string
 }
 
 variable "vpc_cidr" {
-  description = "VPC CIDR block"
+  description = "CIDR block for VPC"
   type        = string
 }
 
 variable "availability_zones" {
-  description = "Availability zones"
+  description = "List of availability zones"
   type        = list(string)
 }
 
 variable "private_subnet_cidrs" {
-  description = "Private subnet CIDR blocks"
+  description = "CIDR blocks for private subnets"
   type        = list(string)
 }
 
 variable "public_subnet_cidrs" {
-  description = "Public subnet CIDR blocks"
+  description = "CIDR blocks for public subnets"
   type        = list(string)
 }

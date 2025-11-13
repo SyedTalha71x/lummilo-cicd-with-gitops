@@ -17,13 +17,13 @@ terraform {
   }
   
   # State file storage in S3 ( Production Grade Best Practice )
-  backend "s3" {
-    bucket         = "terraform-state-lock-bucket-v1-2"
-    key            = "prod/eks-vpc/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "terraform-state-lock"
-  }
+  # backend "s3" {
+  #   bucket         = "terraform-state-lock-bucket-v1-2"
+  #   key            = "prod/eks-vpc/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   encrypt        = true
+  #   dynamodb_table = "terraform-state-lock"
+  # }
 }
 
 provider "aws" {

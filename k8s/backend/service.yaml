@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lummilo-backend-service
+spec:
+  selector:
+    app: lummilo-backend
+  ports:
+  - port: 80
+    protocol: TCP
+  type: ClusterIP

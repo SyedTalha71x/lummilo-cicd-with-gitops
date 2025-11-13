@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ../application/server
+      dockerfile: Dockerfile
+    container_name: lummilo-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4008
+    env_file:
+    - ../application/server/.env
+    ports:
+      - "4008:4008"
+    networks:
+      - lummilo-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4008/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ../application/client
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_API_URL: http://localhost:4008/api
+    container_name: lummilo-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - lummilo-network
+
+networks:
+  lummilo-network:
+    driver: bridge

@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lummilo-backend
+  labels:
+    app: lummilo-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lummilo-backend
+  template:
+    metadata:
+      labels:
+        app: lummilo-backend
+    spec:
+      containers:
+      - name: lummilo-backend-container
+        image: 121775527711.dkr.ecr.us-east-1.amazonaws.com/lummilo-backend:27-a934ebd
+        ports:
+        - containerPort: 4008
+        env:
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: mongodb-uri
+
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: jwt-secret
+
+        - name: EMAIL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: email-pass
+
+        - name: EMAIL_USER
+          value: pc16777.syedtalhahussain@gmail.com
+
+        - name: PORT
+          value: "4008"
+
+        - name: CLOUDINARY_CLOUD_NAME
+          value: dswrj90zp
+
+        - name: CLIENT_URL
+          value: http://localhost:4001
+
+        - name: FRONTEND_URL
+          value: http://localhost:4001
+        
+        - name: CLOUDINARY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: cloudinary-api-key
+
+        - name: CLOUDINARY_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: cloudinary-api-secret
+        
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: stripe-secret-key
+        
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: stripe-secret-key
+        
+        - name: ADMIN_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: admin-secret-key
+        
+        - name: PRERENDER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: prerender-token
+        
+        - name: STRIPE_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: stripe-webhook-secret
+        
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: openai-api-key
+
+        - name: OPENAI_API_KEY_FOR_LUMMILO_PARENT_COACH
+          valueFrom:
+            secretKeyRef:
+              name: lummilo-secrets
+              key: openai-api-key-for-lummilo-parent-coach
+        
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 4008
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 4008
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000

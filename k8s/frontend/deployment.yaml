@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: lummilo-frontend-container
-        image: ghcr.io/syedtalha71x/lummilo-cicd-with-gitops-frontend:5b92060
+        image: ghcr.io/syedtalha71x/lummilo-cicd-with-gitops-frontend:74b7df8
         ports:
         - containerPort: 80
         env:

@@ -2,15 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: lummilo-ingress
-  namespace: default  # Specify namespace if needed
+  namespace: default
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/group.name: lummilo-ingress-group
-    # Add SSL if needed
-    # alb.ingress.kubernetes.io/certificate-arn: your-certificate-arn
-    # alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
 spec:
   ingressClassName: alb
   rules:

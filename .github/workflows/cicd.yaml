@@ -16,7 +16,7 @@ env:
 jobs:
   # Job 1: Security Scanning (Shift Left - Run First)
   security:
-    name: Security Scans
+    name: Security Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

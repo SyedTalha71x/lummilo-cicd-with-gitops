@@ -129,3 +129,5 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
+      imagePullSecrets:
+      - name: ghcr-secret

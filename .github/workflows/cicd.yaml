@@ -165,6 +165,7 @@ jobs:
           }
 
   # Job 5: Notification
+    # Job 5: Notification
   notify:
     name: Deployment Notification
     runs-on: ubuntu-latest
@@ -173,12 +174,21 @@ jobs:
 
     steps:
       - name: Notify Slack
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v1.27.0
         with:
-          status: ${{ job.status }}
-          text: |
-            Pipeline: ${{ job.status }}
-            Branch: ${{ github.ref }}
-            Commit: ${{ github.sha }}
-            Services: Backend & Frontend
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "Deployment Notification",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Pipeline Status:* ${{ job.status }}\n*Branch:* ${{ github.ref }}\n*Commit:* ${{ github.sha }}\n*Services:* Backend & Frontend\n*Repository:* ${{ github.repository }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

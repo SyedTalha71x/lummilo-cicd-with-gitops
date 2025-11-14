@@ -3,8 +3,12 @@ name: Lummilo CI/CD with GitOps
 on:
   push:
     branches: [main, develop]
+    paths-ignore:
+      - 'k8s/**'
   pull_request:
     branches: [main, develop]
+    paths-ignore:
+      - 'k8s/**'
 
 env:
   DOCKER_REGISTRY: ghcr.io

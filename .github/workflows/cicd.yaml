@@ -8,7 +8,8 @@ on:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # Force lowercase for the image name
+  IMAGE_NAME: ${{ lower(github.repository) }}
 
 jobs:
   # Job 1: Security Scanning (Shift Left - Run First)
@@ -24,7 +25,7 @@ jobs:
         with:
           scan-type: "fs"
           scan-ref: "."
-          format: "table"  # Changed from sarif to table for console output
+          format: "table"
           severity: "CRITICAL,HIGH"
 
       - name: Check scan results
@@ -139,13 +140,15 @@ jobs:
 
       - name: Update backend deployment image
         run: |
-          NEW_IMAGE="${{ env.DOCKER_REGISTRY }}/${{ github.repository }}-backend:${{ steps.vars.outputs.short_sha }}"
+          # Use lowercase repository name for Docker image
+          NEW_IMAGE="${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ steps.vars.outputs.short_sha }}"
           # Update backend deployment.yaml
           sed -i "s|image:.*backend.*|image: $NEW_IMAGE|" k8s/backend/deployment.yaml
 
       - name: Update frontend deployment image
         run: |
-          NEW_IMAGE="${{ env.DOCKER_REGISTRY }}/${{ github.repository }}-frontend:${{ steps.vars.outputs.short_sha }}"
+          # Use lowercase repository name for Docker image
+          NEW_IMAGE="${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ steps.vars.outputs.short_sha }}"
           # Update frontend deployment.yaml
           sed -i "s|image:.*frontend.*|image: $NEW_IMAGE|" k8s/frontend/deployment.yaml
 

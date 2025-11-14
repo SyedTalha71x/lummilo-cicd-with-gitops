@@ -6,10 +6,19 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    # alb.ingress.kubernetes.io/group.name: lummilo-alb-group  # Optional for grouping
 spec:
   ingressClassName: alb
   rules:
+    - host: argocd.syedtalhahussain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
     - host: lummilo.syedtalhahussain.com
       http:
         paths:

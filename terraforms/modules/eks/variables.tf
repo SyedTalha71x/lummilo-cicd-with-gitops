@@ -26,7 +26,7 @@ variable "public_subnet_ids" {
 variable "instance_types" {
   description = "List of EC2 instance types for EKS nodes"
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["c7i-flex.large"]
 }
 
 variable "desired_size" {
@@ -57,4 +57,16 @@ variable "aws_region" {
   description = "AWS region"
   type        = string
   default     = "us-east-1"
+}
+
+variable "capacity_type" {
+  description = "Capacity type for EKS nodes (ON_DEMAND or SPOT)"
+  type        = string
+  default     = "SPOT"
+}
+
+variable "ami_type" {
+  description = "AMI type for EKS nodes"
+  type        = string
+  default     = "AL2_x86_64"
 }

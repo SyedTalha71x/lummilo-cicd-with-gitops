@@ -10,18 +10,6 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    # ArgoCD Rule
-    - host: argocd.syedtalhahussain.com  
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
-    
     - host: lummilo.syedtalhahussain.com
       http:
         paths:

@@ -49,7 +49,7 @@ variable "cluster_version" {
 variable "instance_types" {
   description = "List of EC2 instance types for EKS nodes"
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["c7i-flex.large"]
 }
 
 variable "desired_size" {

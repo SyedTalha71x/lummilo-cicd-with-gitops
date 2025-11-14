@@ -53,16 +53,10 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies and test backend
-        run: |
-          cd application/server
-          npm ci
-          echo "Backend tests will be implemented here"
+        run: echo "Backend tests will be implemented later"
 
       - name: Install dependencies and test frontend
-        run: |
-          cd application/client
-          npm ci
-          echo "Frontend tests will be implemented here"
+        run: echo "Frontend tests will be implemented later"
 
   # Job 3: Build & Push Images
   build:

@@ -78,10 +78,23 @@ resource "aws_eks_node_group" "main" {
 
   instance_types = var.instance_types
 
+  capacity_type  = var.capacity_type  
+  ami_type       = var.ami_type 
+  
+  # Update strategy
+  update_config {
+    max_unavailable = 1
+  }
+
   scaling_config {
     desired_size = var.desired_size
     max_size     = var.max_size
     min_size     = var.min_size
+  }
+
+  # Ensure proper resource cleanup
+  lifecycle {
+    create_before_destroy = true
   }
 
   depends_on = [
@@ -90,36 +103,3 @@ resource "aws_eks_node_group" "main" {
     aws_iam_role_policy_attachment.nodes_AmazonEC2ContainerRegistryReadOnly,
   ]
 }
-
-# # Generate kubeconfig
-# locals {
-#   kubeconfig = <<YAML
-# apiVersion: v1
-# clusters:
-# - cluster:
-#     server: ${aws_eks_cluster.main.endpoint}
-#     certificate-authority-data: ${aws_eks_cluster.main.certificate_authority[0].data}
-#   name: ${aws_eks_cluster.main.arn}
-# contexts:
-# - context:
-#     cluster: ${aws_eks_cluster.main.arn}
-#     user: ${aws_eks_cluster.main.arn}
-#   name: ${aws_eks_cluster.main.arn}
-# current-context: ${aws_eks_cluster.main.arn}
-# kind: Config
-# preferences: {}
-# users:
-# - name: ${aws_eks_cluster.main.arn}
-#   user:
-#     exec:
-#       apiVersion: client.authentication.k8s.io/v1beta1
-#       command: aws
-#       args:
-#         - --region
-#         - ${var.aws_region}
-#         - eks
-#         - get-token
-#         - --cluster-name
-#         - ${aws_eks_cluster.main.name}
-# YAML
-# }

@@ -2,15 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: lummilo-ingress
-  namespace: default
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/group.name: shared-alb-group
-    # Add these annotations for better path handling
     alb.ingress.kubernetes.io/healthcheck-path: /api/health
-    alb.ingress.kubernetes.io/success-codes: "200,404"
+    alb.ingress.kubernetes.io/healthcheck-port: "4008"
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
 spec:
   ingressClassName: alb
   rules:
@@ -28,13 +27,6 @@ spec:
       http:
         paths:
           - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: lummilo-backend-service
-                port:
-                  number: 80
-          - path: /
             pathType: Prefix
             backend:
               service:

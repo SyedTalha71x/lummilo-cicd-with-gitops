@@ -21,7 +21,7 @@ spec:
         - containerPort: 80
         env:
         - name: VITE_BACKEND_API_URL
-          value: "https://lummilo.syedtalhahussain.com/api"
+          value: "http://api.syedtalhahussain.com"
         resources:
           requests:
             memory: "128Mi"

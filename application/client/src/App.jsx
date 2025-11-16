@@ -42,6 +42,11 @@ function AppWrapper() {
   const location = useLocation()
   const hideLayout = location.pathname === '/signup' || location.pathname === '/signin' || location.pathname === '/admin-signin' || location.pathname === '/reset-password' || location.pathname === '/verify-otp' || location.pathname === '/forgot-password' || location.pathname === '/create-profile'
 
+    console.log('=== ENV DEBUG ===');
+  console.log('import.meta.env:', import.meta.env);
+  console.log('VITE_BACKEND_API_URL:', import.meta.env.VITE_BACKEND_API_URL);
+  console.log('=== END DEBUG ===');
+  
 
   return (
     <>

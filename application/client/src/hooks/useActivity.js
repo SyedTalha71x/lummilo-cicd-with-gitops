@@ -3,10 +3,6 @@ import axios from 'axios';
 import { BASE_URL } from '../utils/api';
 
 export const useActivity = (id) => {
-  console.log('=== ENV DEBUG ===');
-console.log('import.meta.env:', import.meta.env);
-console.log('VITE_BACKEND_API_URL:', import.meta.env.VITE_BACKEND_API_URL);
-console.log('=== END DEBUG ===');
 
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);

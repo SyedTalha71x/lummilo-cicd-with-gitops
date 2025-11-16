@@ -5,9 +5,12 @@ metadata:
   namespace: default
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/group.name: shared-alb-group  #Same group name
+    alb.ingress.kubernetes.io/group.name: shared-alb-group
+    # Add these annotations for better path handling
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/success-codes: "200,404"
 spec:
   ingressClassName: alb
   rules:
@@ -21,9 +24,16 @@ spec:
                 name: lummilo-frontend-service
                 port:
                   number: 80
-    - host: api.syedtalhahussain.com  # Backend ke liye alag subdomain
+    - host: api.syedtalhahussain.com
       http:
         paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: lummilo-backend-service
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:

@@ -71,12 +71,6 @@ spec:
               name: lummilo-secrets
               key: stripe-secret-key
         
-        - name: STRIPE_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: lummilo-secrets
-              key: stripe-secret-key
-        
         - name: ADMIN_SECRET_KEY
           valueFrom:
             secretKeyRef:

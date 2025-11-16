@@ -7,6 +7,10 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
+
+ARG VITE_BACKEND_API_URL
+ENV VITE_BACKEND_API_URL=$VITE_BACKEND_API_URL
+
 RUN npm run build
 
 # -------- Stage 2: Serve with NGINX --------

@@ -11,6 +11,7 @@
   import { checkReferralReward } from "./referralController.js";
   import { logEvent } from "../Utils/log-event.js";
   import Favorite from "../Models/Favorite.js";
+import { logger } from "../Utils/logger.js";
 
   const checkUserSubscription = async (userId) => {
     if (!userId) return false;
@@ -477,6 +478,7 @@ export const filterActivities = async (req, res) => {
     const paginatedActivities = finalActivities.slice(skip, skip + Number(limit))
     const responseActivities = paginatedActivities.map(({ reviewCount, ...rest }) => rest)
 
+    logger.info(`Filtered activities: searchTerm=${searchTerm}, category=${category}, age=${age}, sort=${sort}, status=${status}, page=${page}, limit=${limit}, totalCount=${totalCount}`)
     res.status(200).json({
       success: true,
       activities: responseActivities,
@@ -485,6 +487,7 @@ export const filterActivities = async (req, res) => {
       totalCount,
     })
   } catch (error) {
+    logger.error("Filter Activities Error:", error)
     console.error("Error filtering activities:", error)
     res.status(500).json({ message: "Server error" })
   }
@@ -1027,6 +1030,7 @@ export const filterActivities = async (req, res) => {
         refreshMessage = `⏰ New activities in ${daysUntilRefresh} days (Monday 6 AM)`;
       }
 
+      logger.info(`User ${userId || 'Guest'} - Week ${weekNumber} - Completed ${completedThisWeek}/5 - Next refresh in ${daysUntilRefresh} days`);
       res.status(200).json({
         success: true,
         activities,
@@ -1049,6 +1053,7 @@ export const filterActivities = async (req, res) => {
         }
       });
     } catch (err) {
+      logger.error('Error fetching play week activities:', err);
       console.error('❌ Error in getPlayWeekActivities:', err);
       res.status(500).json({ 
         success: false,

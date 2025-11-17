@@ -4,7 +4,6 @@ import { config as configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { networkInterfaces } from 'os';
 import connectToDatabase from "./src/Utils/db.js";
 import prerender from "prerender-node";
 
@@ -23,7 +22,11 @@ import OpenAIRoutes from './src/Routes/OpenAIRoutes.js'
 import parentCoachRoutes from './src/Routes/parentCoachRoutes.js'
 import cohortRoutes from './src/Routes/cohortRoutes.js'
 
+
 import cron from 'node-cron';
+// import metricsMiddleware from "./src/Middleware/metricsMiddleware.js";
+import metricRoutes from './src/Routes/metricRoutes.js'
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,15 +36,17 @@ configDotenv();
 connectToDatabase(process.env.MONGODB_URL);
 
 const app = express();
+app.use(metricRoutes);
 
 if (process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);
 }
 
+// app.use(metricsMiddleware);
 app.use(prerender.set("prerenderToken", process.env.PRERENDER_TOKEN));
 
 // // CORS Configuration - Simplified for JWT only
-// app.use(cors({
+// app.use(cors({   
 //     origin: [
 //         "https://eensterkestart.nl",
 //         "https://admin.eensterkestart.nl",
